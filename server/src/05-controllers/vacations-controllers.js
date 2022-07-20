@@ -1,6 +1,6 @@
 const { request, response, next } = require('express');
 const express = require('express');
-const logic = require('../05-logics/vacations-logic');
+const logic = require('../04-logics/vacations-logic');
 
 const router = express.Router();
 
@@ -23,13 +23,12 @@ router.get('/:vactionId', async (request, response, next) => {
   console.log(vactionId);
   try {
     const vacation = await logic.getOneVacationAsync(vactionId);
-    if(vacation.length>0){
+    if (vacation.length > 0) {
       response.json(vacation);
+    } else {
+      response.json(`Vacation does not exist.`);
     }
-   else{
-    response.json(`Vacation does not exist.`);
-   }
-  } catch (error) { 
+  } catch (error) {
     return next(error);
   }
 });
@@ -52,18 +51,15 @@ router.post('/', async (request, response, next) => {
 });
 
 //4. Delete Vacation
-router.delete("/:vactionId", async (request, response, next) => {
+router.delete('/:vactionId', async (request, response, next) => {
   try {
-      const vactionId = +request.params.vactionId;
-      await logic.deleteVacationAsync(vactionId);
-      console.log(`Vacation ${vactionId} Was Deleted Sucssefuly`);
-      response.json('Vacation Was Deleted Sucssefuly');
-  }
-  catch(err) {
-    response.json(`Vacation does not exist.`);
-      next(err);
+    const vactionId = +request.params.vactionId;
+    await logic.deleteVacationAsync(vactionId);
+    console.log(`Vacation ${vactionId} Was Deleted Sucssefuly`);
+    response.json(`Vacation ${vactionId} Was Deleted Sucssefuly`);
+  } catch (error) {
+    return next(error);
   }
 });
-
 
 module.exports = router;

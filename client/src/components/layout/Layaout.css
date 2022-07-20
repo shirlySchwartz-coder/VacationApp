@@ -1,0 +1,28 @@
+.Layout {
+  text-align: center;
+  background-color: rgb(207, 204, 230);
+}
+.Header {
+  text-align: center;
+  background-color: rgb(21, 0, 255);
+}
+
+.Menu {
+  text-align: center;
+  background-color: aqua;
+  padding: 25px;
+}
+.Main {
+  height: 75%;
+  width: 100%;
+  min-height: 75%;
+  box-sizing: border-box;
+  border: solid #5b6dcd 5px; 
+  padding: 25px;
+  background-color: rgb(240, 246, 246);
+}
+
+.Footer {
+  text-align: center;
+  background-color: #6276e5;
+}

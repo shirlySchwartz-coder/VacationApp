@@ -7,6 +7,8 @@ const config = {
     database: 'vacations_db',
   },
   origin: 'http://localhost:3000',
+  loginExpiresIn: "30m",
+  secretKey: 'ThisisMySecretKeySentance@#$#$'
 };
 
 module.exports = config;
