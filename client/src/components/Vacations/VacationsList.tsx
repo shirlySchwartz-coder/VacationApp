@@ -29,9 +29,11 @@ function VacationsList() {
       <div className='bd-example container'>
         <h2>Vacations List</h2>
         <div className='row row-cols-1 row-cols-md-3 g-4'>
-          {vacations.map((vacation) => {
-            return <Card vacation={vacation} key={vacation.id} />;
-          })}
+          
+            {vacations.map((vacation) => {
+              return <Card vacation={vacation} key={vacation.vacation_id} />;
+            })}
+          
         </div>
       </div>
     </div>

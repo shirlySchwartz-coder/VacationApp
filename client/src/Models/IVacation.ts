@@ -1,9 +1,9 @@
 export default interface IVacation{
-    id: number;
+    vacation_id: number;
     destination: string;
     price: number;
-    start_date: string;
-    end_date: string;
+    start_date: Date;
+    end_date: Date;
     image_url: string;
     amount_of_followers: number;
 }

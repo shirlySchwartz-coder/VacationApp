@@ -24,7 +24,7 @@ function Login() {
 
   const onLoginClicked = async () => {
     try {
-        validateLoginData();
+      validateLoginData();
       const response = await axios.post('http://localhost:3001/users/login', {
         userName,
         password,
@@ -41,20 +41,33 @@ function Login() {
   };
 
   return (
-    <div className='login'>
-      <input
-        type='text'
-        placeholder='user name'
-        onChange={(event) => setUserName(event.target.value)}
-      />
-      <br />
-      <input
-        type='password'
-        placeholder='password'
-        onChange={(event) => setPassword(event.target.value)}
-      />
-      <br />
-      <input type='button' value='login' onClick={onLoginClicked} />
+    <div className='Login'>
+      <div className='Login-content'>
+        <h4>Login</h4>
+        <input
+          type='text'
+          placeholder='user name'
+          onChange={(event) => setUserName(event.target.value)}
+        />
+        <br />
+        <input
+          type='password'
+          placeholder='password'
+          onChange={(event) => setPassword(event.target.value)}
+        />
+
+        <div>Forget your password?</div>
+        <br />
+        <input
+          type='button'
+          value='Login'
+          className='Login-Btn'
+          onClick={onLoginClicked}
+        />
+       
+        <br />
+        <div>Don't have an account? </div>
+      </div>
     </div>
   );
 }

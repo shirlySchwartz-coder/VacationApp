@@ -4,8 +4,8 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Footer from './Footer';
 import Header from './Header';
 import './Layaout.css';
-import Login from '../Login/Login';
-import Register from '../Login/Register';
+import Login from '../accounts/Login';
+import Register from '../accounts/Register';
 import Modal from './ModalForm';
 import About from '../pages/About';
 

@@ -1,64 +1,70 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import IVacation from '../../Models/IVacation';
 import { ActionType } from '../../redux/action-type';
 import { AppState } from '../../redux/app-state';
 import './Card.css';
 
-
-
 export interface IVacationCard {
-    vacation: IVacation;
+  vacation: IVacation;
 }
 
 function Card(props: IVacationCard) {
   const { vacation } = props;
-  // let servers = useSelector((state: AppState) => state.servers);
-  //const [serverStatus, setServerStatus] = useState('NULL');
-  const dispatch = useDispatch();
-  
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
+  const [img, setImg] = useState('');
 
-//   const changeServerStatus = async (vacation:IVacation) => { 
-//     //let curentStatus = server.status;
-//     try {
-//       const response = await axios.post('http://localhost:3001/',{ vacation });
-//       console.log(response);
-//       dispatch({type : ActionType.ChangeStatus, payload: vacation});
-//           } 
-//           catch (e) {
-//       console.log('change status function -Failed to retrive vacations');
+  const nlBEFormatter = new Intl.DateTimeFormat('nl-BE');
 
-//     }
+  const intialDate = (unformateDate: Date) => {
+    const date = new Date(unformateDate);
+    const dateFormated = nlBEFormatter.format(date);
+    return dateFormated;
+  };
+  const defaultPicture = ()=> {
+    if (!vacation.image_url || vacation.image_url.length == 0) {
+      let defaultImg =
+        'https://cdn.pixabay.com/photo/2016/01/09/18/28/notepad-1130743__340.jpg';
+      return defaultImg;
+    }
+    else return vacation.image_url
+  };
 
-  //}
+  useEffect(() => {
+    return () => {
+      setStart(intialDate(vacation.start_date));
+      setEnd(intialDate(vacation.end_date));
+      setImg(defaultPicture());
+    };
+  }, []);
 
   return (
-    <div className='card'>
-      <div className='card-body'>
-        <div>
-          <h5 className='card-title'>
-            <label htmlFor=''>Destination:</label>
-            <span> {vacation.destination}</span>
-          </h5>
+    <div className='col'>
+      <div className='card'>
+        <img className='card-img-top rounded-start' src={img} />
+        <div className='card-body'>
+          <>
+            <label className='card-title'>Destination: </label>
+            <span className='card-text'>{vacation.destination}</span>
+          </>
+          <br />
+          <>
+            <label htmlFor=''>Price: </label>
+            <span>{vacation.price}</span>
+          </>
+          <br />
+          <>
+            <label htmlFor=''>Start date: </label>
+            <span>{start}</span>
+          </>
+          <div>
+            <label htmlFor=''>End date: </label>
+            <span>{end}</span>
+          </div>
+          <br />
         </div>
-        <div>
-          <img  src={vacation.image_url}/>
-        </div>
-        <div>
-          <label htmlFor=''>Price: </label>
-          <span>{vacation.price}</span>
-        </div>
-        <div>
-          <label htmlFor=''>Start date: </label>
-          <span>{vacation.start_date}</span>
-        </div>
-        <div>
-          <label htmlFor=''>End date: </label>
-          <span>{vacation.end_date}</span>
-        </div>
-
-
       </div>
     </div>
   );
