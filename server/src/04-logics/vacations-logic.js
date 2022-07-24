@@ -1,34 +1,33 @@
-const dal = require('../04-dal/dal');
-const ServerError = require('../03-errors/error-handler');
-const ErrorType = require('../03-errors/error-type');
+const dal = require('../03-dal/dal');
+const ServerError = require('../07-errors/server-error');
+const ErrorType = require('../07-errors/error-type');
 
 async function getAllVacationsAsync() {
   const sql = `SELECT * FROM vacations`;
   try {
     const vacations = await dal.execute(sql);
-  return vacations;
+    return vacations;
   } catch (error) {
-    //throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(), e);
-    next(err)
-  }  
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(), error);
+    next(err);
+  }
 }
 
 async function getOneVacationAsync(id) {
   let params = id;
-  const sql = `SELECT * FROM vacations where id =` + params;
+  const sql = `SELECT * FROM vacations where vacation_id = ?`;
   try {
-    const vacation = await dal.execute(sql, params);
-  return vacation;
+    const vacation = await dal.executeWithParams(sql, params);
+    return vacation;
   } catch (error) {
-    //throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(), e);
-    next(err)
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(), error);
+    next(err);
   }
-  
 }
 
 async function addVacationAsync(vacation) {
   const sql = `INSERT INTO vacations
-  (destination, price ,amount_of_followers,is_followed, image_url, start_date, end_date,description )
+  (destination, price ,amount_of_followers, image_url, start_date, end_date,description )
   VALUES(?,?,?,?,?,?,?,?)`;
 
   const params = [
@@ -55,18 +54,22 @@ async function addVacationAsync(vacation) {
 }
 
 async function deleteVacationAsync(id) {
+  const params = [id];
+  const sql = `DELETE FROM vacations WHERE vacation_id = ?`;
   try {
-    const sql = `DELETE FROM vacations WHERE id = ${id}`;
-  await dal.execute(sql);
+    await dal.executeWithParams(sql, params);
   } catch (error) {
-    throw new ServerError(ErrorType.VACATION_DONT_EXIST, JSON.stringify(), e);
+    throw new ServerError(
+      ErrorType.VACATION_DONT_EXIST,
+      JSON.stringify(),
+      error
+    );
   }
-  
 }
 
 module.exports = {
   getAllVacationsAsync,
   getOneVacationAsync,
   addVacationAsync,
-  deleteVacationAsync
+  deleteVacationAsync,
 };

@@ -1,6 +1,6 @@
 const mysql = require('mysql2');
-const ServerError = require('../03-errors/error-handler')
-const ErrorType = require('../03-errors/error-type')
+const ServerError = require('../07-errors/error-handler')
+const ErrorType = require('../07-errors/error-type')
 
 const connection = mysql.createConnection({
   host: 'localhost',
