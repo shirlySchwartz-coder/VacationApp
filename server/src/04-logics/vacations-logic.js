@@ -12,6 +12,23 @@ async function getAllVacationsAsync() {
     next(err);
   }
 }
+async function getVacationsByPage(pageNumber, limit) {
+  // Validation (helps prevent the security issue referenced in the controller)
+  //return await dal.getVacationsByPage(pageNumber, amountOfItemsPerPage);
+  let sql =
+    "SELECT vacation_id, destination, price, amount_of_followers, image_url, start_date, end_date, description FROM vacations order by vacation_id LIMIT ? OFFSET ?";
+
+  let offset = +(pageNumber - 1) * limit;
+  let params = [limit, offset];
+
+  try {
+    let vacationsPerPage = await dal.executeWithParams(sql, params);
+    return vacationsPerPage;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 async function getOneVacationAsync(id) {
   let params = id;
@@ -72,4 +89,5 @@ module.exports = {
   getOneVacationAsync,
   addVacationAsync,
   deleteVacationAsync,
+  getVacationsByPage,
 };

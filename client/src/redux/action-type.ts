@@ -1,8 +1,6 @@
 export enum ActionType {
-  //ChangeStatus,
   GetAllVacations,
-  //AddVacation,
+  //GetVacations,
+  AddVacation,
   //FilterVacations,
-  //FilterServersByTime
-  //AddServer,
 }

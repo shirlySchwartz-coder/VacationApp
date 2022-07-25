@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import VacationsList from '../Vacations/VacationsList';
+//import VacationsList from '../Vacations/VacationsList';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Footer from './Footer';
 import Header from './Header';
@@ -8,6 +8,8 @@ import Login from '../accounts/Login';
 import Register from '../accounts/Register';
 import Modal from './ModalForm';
 import About from '../pages/About';
+import VacationsPages from '../Vacations/VacationsPages';
+//import VacationsList from '../Vacations/VacationsList';
 
 function Layout() {
   return (
@@ -16,7 +18,9 @@ function Layout() {
         <Header />
         <div className='Main'>
           <Routes>
-            <Route path='/' element={<VacationsList />} />
+          {/*<Route path='/' element={<VacationsList />} />*/ } 
+            <Route path='/ ' element={<VacationsPages/>} />
+            
             <Route path='/about' element={<About/>} />
             <Route path='/users/' element={<Register />} />
             <Route path='/users/login' element={<Login />} />

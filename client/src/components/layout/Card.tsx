@@ -26,7 +26,7 @@ function Card(props: IVacationCard) {
   const defaultPicture = ()=> {
     if (!vacation.image_url || vacation.image_url.length == 0) {
       let defaultImg =
-        'https://cdn.pixabay.com/photo/2016/01/09/18/28/notepad-1130743__340.jpg';
+        'https://cdn.pixabay.com/photo/2017/10/23/05/56/summer-2880261__480.jpg';
       return defaultImg;
     }
     else return vacation.image_url
