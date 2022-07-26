@@ -1,33 +1,21 @@
 const dal = require('../03-dal/dal');
 const ServerError = require('../07-errors/server-error');
 const ErrorType = require('../07-errors/error-type');
+const vacationsDal = require('../03-dal/vacations-dal')
 
-async function getAllVacationsAsync() {
-  const sql = `SELECT * FROM vacations`;
-  try {
-    const vacations = await dal.execute(sql);
-    return vacations;
-  } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(), error);
-    next(err);
-  }
-}
-async function getVacationsByPage(pageNumber, limit) {
+// async function getAllVacationsAsync() {
+//   const sql = `SELECT * FROM vacations`;
+//   try {
+//     const vacations = await dal.execute(sql);
+//     return vacations;
+//   } catch (error) {
+//     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(), error);
+//     next(err);
+//   }
+// }
+async function getVacationsByPage(pageNumber, amountOfItemsPerPage){
   // Validation (helps prevent the security issue referenced in the controller)
-  //return await dal.getVacationsByPage(pageNumber, amountOfItemsPerPage);
-  let sql =
-    "SELECT vacation_id, destination, price, amount_of_followers, image_url, start_date, end_date, description FROM vacations order by vacation_id LIMIT ? OFFSET ?";
-
-  let offset = +(pageNumber - 1) * limit;
-  let params = [limit, offset];
-
-  try {
-    let vacationsPerPage = await dal.executeWithParams(sql, params);
-    return vacationsPerPage;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
+  return await vacationsDal.getVacationsByPage(pageNumber, amountOfItemsPerPage);
 }
 
 async function getOneVacationAsync(id) {
@@ -85,7 +73,7 @@ async function deleteVacationAsync(id) {
 }
 
 module.exports = {
-  getAllVacationsAsync,
+  //getAllVacationsAsync,
   getOneVacationAsync,
   addVacationAsync,
   deleteVacationAsync,

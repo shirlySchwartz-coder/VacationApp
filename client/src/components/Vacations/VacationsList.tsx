@@ -18,7 +18,7 @@ function VacationsList() {
     try {
       const response = await axios.get('http://localhost:3001/vacations');
       let vacationsArray: IVacation[] = response.data;
-     dispatch({ type: ActionType.GetAllVacations, payload: vacationsArray });
+    // dispatch({ type: ActionType.GetAllVacations, payload: vacationsArray });
     } catch (e) {
       console.log('Failed to retrive vacations');
     }

@@ -11,12 +11,12 @@ export function reduce(
   const newAppState = { ...oldAppState };
 
   switch (action.type) {
-    case ActionType.GetAllVacations:
-      newAppState.vacations = action.payload;
-      break;
-    // case ActionType.GetVacations:
+    // case ActionType.GetAllVacations:
     //   newAppState.vacations = action.payload;
     //   break;
+    case ActionType.GetVacations:
+      newAppState.vacations = action.payload;
+      break;
     // case ActionType.ChangeStatus:
     // newAppState.vacations = [...oldAppState.vacations,action.payload];
     // const index = oldAppState.servers.findIndex(server => server.server_id == action.payload.server.server_id);

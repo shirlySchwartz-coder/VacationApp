@@ -18,10 +18,10 @@ function Layout() {
         <Header />
         <div className='Main'>
           <Routes>
-          {/*<Route path='/' element={<VacationsList />} />*/ } 
-            <Route path='/ ' element={<VacationsPages/>} />
-            
-            <Route path='/about' element={<About/>} />
+            <Route path='/' element={<VacationsPages />} />
+            {/* <Route path='/ ' element={<VacationsPages/>} />*/}
+
+            <Route path='/about' element={<About />} />
             <Route path='/users/' element={<Register />} />
             <Route path='/users/login' element={<Login />} />
           </Routes>

@@ -7,7 +7,6 @@ const jwtHelper = require('../08-helpers/jwt-helpers');
 const validateUserData = require('../06-middlewares/valid-data');
 const ischeckUserData = require('../06-middlewares/valid-data');
 
-
 async function registerAsync(user) {
   // Validation:
   const errors = validateUserData(user);
@@ -80,7 +79,6 @@ async function addUser(user) {
   }
 }
 
-
 //Login
 async function loginAsync(credentials) {
   // Validation:
@@ -117,8 +115,9 @@ async function getUserAsync(credentials) {
 ///Update Functions
 async function updatePasswordAsync(userToUpdate) {
   const updatedUser = await changePassword(userToUpdate);
-  if (!updatedUser) throw new ServerError(ErrorType.WRONG_USER_NAME_OR_PASSWORD);
-  
+  if (!updatedUser)
+    throw new ServerError(ErrorType.WRONG_USER_NAME_OR_PASSWORD);
+
   const newToken = jwtHelper.getNewToken(userToUpdate);
   return newToken;
 }
@@ -127,13 +126,13 @@ async function changePassword(user) {
   let newPassword = encryptPassword(user.newPassword);
   let originalPassword = encryptPassword(user.password);
   let id = +user.fullToken.userId;
-  let sql = 'UPDATE users SET password = ? where id=? and user_name = ? and password = ?';
+  let sql =
+    'UPDATE users SET password = ? where id=? and user_name = ? and password = ?';
   let params = [newPassword, id, user.user_name, originalPassword];
   let updatedUser = await dal.executeWithParams(sql, params);
 
   if (!updatedUser || updatedUser.affectedRows === 0) {
     throw new ServerError(ErrorType.WRONG_USER_NAME_OR_PASSWORD);
-    
   }
   return true;
 }
