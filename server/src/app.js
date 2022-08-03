@@ -5,7 +5,7 @@ const usersController = require('./05-controllers/users-controllers');
 const vacationController = require('./05-controllers/vacations-controllers');
 
 const config = require('./01-utils/config');
-const errorsHandler = require('./07-errors/error-handler');
+const errorsHandler = require('./06-middlewares/07-errors/error-handler');
 
 const port = +config.port;
 const origin = config.origin;

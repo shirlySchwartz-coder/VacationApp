@@ -8,27 +8,26 @@ function SocketContainer({ children }: any) {
   let [socket, setSocket] = useState(null);
   // debugger;
   let connect: Function = (token: string) => {
-    // let newSocket = io("http://localhost:3002", {
-    //     extraHeaders: { token }
-    // });
+   
     let newSocket = io('http://localhost:3002', {
       query: { token },
-      // transports: ["websocket"]
+      transports: ["websocket"]
     });
 
-    // !!!!!!! IMPORTANT !!!!!!!!!!!
-    // For the following line to work,
-    // you must add "strictNullChecks": false to the tsConfig.json file
-    // (Typescript compiler definition file)
-    // !!!!!!! IMPORTANT !!!!!!!!!!!
+    console.log('newSocket:' +newSocket);
     setSocket(newSocket);
     console.log('Successful websocket connection');
   };
+
+  let send: Function = (token: string, msg: string) => {
+    socket.emit("msg-from-client", msg)
+  }
 
   // useEffect(() => {
   //     if (!socket){
   //         let token = localStorage.getItem("token");
   //         if (token) {
+  //           console.log("token: " +token);
   //             connect(token);
   //         }
   //     }

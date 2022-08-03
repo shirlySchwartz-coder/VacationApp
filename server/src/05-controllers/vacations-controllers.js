@@ -1,49 +1,32 @@
 const { request, response, next } = require('express');
 const express = require('express');
 const logic = require('../04-logics/vacations-logic');
-//const paginatedResults = require('../06-middlewares/pagination')
 
 const router = express.Router();
 
-//Routing options
-
-// //1. Get All Vacations
-// router.get('/', async (request, response, next) => {
-//   try {
-//     //const vacations = await logic.getAllVacationsAsync();
-//     let currentPageVacations = await logic.getVacationsByPage(pageNumber, limit);
-    
-//     console.log(currentPageVacations);
-//     response.json(vacations);
-//   } catch (error) {
-//     console.log(`Vacations was not received `);
-//     return next(error);
-//   }
-// });
-
 //1. B Get All Vacations- By Pages
-router.get("/", async (request, response, next) => { 
+router.get('/', async (request, response, next) => {
+  let pageNumber = +request.query.page;
+
+  // What a potential attack, a security issue may exists here ??
+  let itemsPerPage = +request.query.itemsPerPage;
   try {
-      let pageNumber = +request.query.page;
-      
-      // What a potential attack, a security issue may exists here ??
-      let itemsPerPage = +request.query.itemsPerPage;
-      
-      let currentPageVacations = await logic.getVacationsByPage(pageNumber, itemsPerPage);
-      console.log(currentPageVacations);
-      response.json(currentPageVacations);
-  }
-  catch (e) {
-      console.error(e);
-      response.status(600).send(e.message)
+    let currentPageVacations = await logic.getVacationsByPage(
+      pageNumber,
+      itemsPerPage
+    );
+    //console.log(currentPageVacations);
+    response.json(currentPageVacations);
+  } 
+  catch (error) {
+    return next(error);
   }
 });
-
 
 //2. Get Vacation By Id
 router.get('/:vactionId', async (request, response, next) => {
   const vactionId = +request.params.vactionId;
-  console.log(vactionId);
+  //console.log(vactionId);
   try {
     const vacation = await logic.getOneVacationAsync(vactionId);
     if (vacation.length > 0) {
@@ -51,7 +34,8 @@ router.get('/:vactionId', async (request, response, next) => {
     } else {
       response.json(`Vacation does not exist.`);
     }
-  } catch (error) {
+  } 
+  catch (error) {
     return next(error);
   }
 });
@@ -68,17 +52,16 @@ router.post('/', async (request, response, next) => {
     }
     response.status(400);
   } catch (error) {
-    console.error('The vacation was not added');
     return next(error);
   }
 });
 
 //4. Delete Vacation
 router.delete('/:vactionId', async (request, response, next) => {
+  let vactionId = +request.params.vactionId;
   try {
-    const vactionId = +request.params.vactionId;
     await logic.deleteVacationAsync(vactionId);
-    console.log(`Vacation ${vactionId} Was Deleted Sucssefuly`);
+    //console.log(`Vacation ${vactionId} Was Deleted Sucssefuly`);
     response.json(`Vacation ${vactionId} Was Deleted Sucssefuly`);
   } catch (error) {
     return next(error);

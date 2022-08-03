@@ -1,7 +1,6 @@
 export enum ActionType {
-  //GetAllVacations,
-  //GetVacations,
+  GetVacationsByPage,
   AddVacation,
-  //FilterVacations,
-  GetVacations
+  //AddProduct,
+  AddNewUser
 }

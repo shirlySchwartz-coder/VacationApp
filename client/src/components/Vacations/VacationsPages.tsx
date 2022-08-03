@@ -1,16 +1,31 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Card from '../layout/Card';
+import { useDispatch, useSelector } from 'react-redux';
 import IVacation from '../../Models/IVacation';
+import { ActionType } from '../../redux/action-type';
+import { SocketContext } from '../../services/socket-container';
+import { AppState } from '../../redux/app-state';
+import AddVacation from './AddVacation';
 
 function VacationsPages() {
-  let [vacations, setVacations] = useState<IVacation[]>([]);
+  const dispatch = useDispatch();
+  let vacations = useSelector((state: AppState) => state.vacations);
   let [pageNumber, setPageNumber] = useState(1);
-  let [amountOfItemsPerPage, setAmountOfItemsPerPage] = useState(6);
+  let [amountOfItemsPerPage, setAmountOfItemsPerPage] = useState(10);
+  let isUserAdmin = true;
+
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     getVacationsByPage(pageNumber, amountOfItemsPerPage);
   }, [pageNumber]);
+
+  if (socket) {
+    socket.on('add-product', (vacation: IVacation) => {
+      dispatch({ type: ActionType.AddVacation, payload: vacation });
+    });
+  }
 
   async function getVacationsByPage(
     pageNumber: number,
@@ -22,11 +37,7 @@ function VacationsPages() {
       let response = await axios.get(url);
       let vacations: IVacation[] = response.data;
 
-      setVacations(vacations);
-      console.log(vacations);
-      return vacations;
-
-      //dispatch({ type: ActionType.GetVacations, payload: vacations })
+      dispatch({ type: ActionType.GetVacationsByPage, payload: vacations });
     } catch (e) {
       console.error(e);
       alert('Failed to retrieve vacations');
@@ -47,10 +58,14 @@ function VacationsPages() {
     <div className='vacations'>
       <div className='bd-example container'>
         <div className='row row-cols-1 row-cols-md-3 g-4'>
+          <div className='col'>{isUserAdmin && <AddVacation />}</div>
+
           {vacations.map((vacation) => (
-            <Card vacation={vacation} key={vacation.vacation_id} />
+            <Card vacation={vacation} key={vacation.vacationId} />
           ))}
-          <>
+        </div>
+        <div className='row'>
+          <div className='col-3'>
             <input
               type='button'
               disabled={pageNumber == 1}
@@ -59,8 +74,7 @@ function VacationsPages() {
             />
             <p>Page: {pageNumber}</p>
             <input type='button' value='next' onClick={() => onNextClicked()} />
-            
-          </>
+          </div>
         </div>
       </div>
     </div>

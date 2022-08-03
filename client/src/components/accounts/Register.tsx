@@ -2,12 +2,15 @@ import axios from 'axios';
 import React, { ChangeEvent, useState, useContext } from 'react';
 import IUser from '../../Models/IUser';
 import { ActionType } from '../../redux/action-type';
+import { useDispatch } from "react-redux";
 
 function Register() {
   let [firstname, setFirstName] = useState('');
   let [lastname, setLastName] = useState('');
   let [username, setUserName] = useState('');
   let [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
 
   const OnInputChanged = (event: ChangeEvent<HTMLInputElement>) => {
     let tempInfo = event.target.value;
@@ -48,6 +51,7 @@ function Register() {
       throw new Error('Some thing not ok with the data;');
     } else {
       const user: IUser = {
+        userId: null,
         firstname: firstname,
         lastname: lastname,
         username: username,
@@ -59,7 +63,7 @@ function Register() {
         axios.post('http://localhost:3001/users/', user).then((response) => {
           console.log(response);
           if (response.status === 200) {
-            //dispatch({type:ActionType.Register, payload: user})
+            dispatch({type:ActionType.AddNewUser, payload: user})
             console.log('User was Add');
           }
         });
@@ -128,12 +132,11 @@ function Register() {
           />
         </div>
       </div>
-
       <input
         type='button'
         className='Login-Btn'
         onClick={onRegisterClicked}
-        value='Register'
+        value='Send'
       />
       <br />
       <div>
@@ -144,3 +147,5 @@ function Register() {
   );
 }
 export default Register;
+
+

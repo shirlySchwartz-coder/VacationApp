@@ -1,4 +1,4 @@
-const ServerError = require('../07-errors/server-error');
+const ServerError = require('./07-errors/server-error');
 
 function validateUserData(userName, password) {
   if (!userName) {

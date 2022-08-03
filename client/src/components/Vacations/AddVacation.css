@@ -1,0 +1,14 @@
+.add-card {
+    display:inline-flex;
+    margin: 2%;
+    padding: 1%; 
+    width: 18rem; 
+   
+}
+.Input-Container{
+    margin-bottom: 5px ;
+}
+.Send-Button{
+    margin-bottom: 5px;
+    
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -9,31 +9,33 @@ import Register from '../accounts/Register';
 
 function ModalForm() {
   const [show, setShow] = useState(false);
-  let on = true;
-  const [showLogin, setShowLogin] = useState(false);
-  /*const [showRegister, setShowRegister] = useState(true);*/
-  const [goTo, setGoTo] = useState('Login');
+  const [on, setOn] = useState(true);
+  const [showLogin, setShowLogin] = useState(true);
+
+  const [goTo, setGoTo] = useState('Register');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const changeLog = () => {
-   
-    console.log(
-      'before showLogin :' + showLogin,
-      'goTo: ' + goTo);
-    if (!showLogin) {
-      setShowLogin(on);
-      setGoTo('Register');
-    } else {
-      setShowLogin(!on);
+    console.log('before showLogin :' + showLogin, 'goTo: ' + goTo ,'on: ' + on) ;
+
+    if (showLogin) {
       setGoTo('Login');
+      setOn(!on)
+    } else {
+      setGoTo('Register');
+      setOn(!on)
     }
+    
+    setShowLogin(on);
+    console.log('after  showLogin :' + showLogin, 'goTo: ' + goTo , 'on: ' + on);
+    //on = !on;
   };
   return (
     <>
       <Button variant='primary' onClick={handleShow}>
-        Register
+        Login
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -41,7 +43,9 @@ function ModalForm() {
         <Modal.Body>
           <Form>
             {showLogin ? <Login /> : <Register />}
-            <input type='button' value={goTo} onClick={changeLog} />
+            <div>
+              <input type='button' value={goTo} onClick={changeLog} />
+            </div>
           </Form>
         </Modal.Body>
       </Modal>
