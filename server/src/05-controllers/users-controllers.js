@@ -2,18 +2,18 @@ const { request, response, next } = require('express');
 const express = require('express');
 const Role = require('../02-models/role');
 const logic = require('../04-logics/users-logic');
-const validData = require('../06-middlewares/valid-data');
+const LoginServices = require('../services/login-services');
 
-let isCheckUserData = validData.isCheckUserData;
+let isCheckUserData = LoginServices.isCheckUserData;
 
 const router = express.Router();
 
 //Register - Add new user
 router.post('/', async (request, response, next) => {
   let userToAdd = request.body;
+  
   userToAdd.user_type = Role.User;
   try {
-   
     let successfullRegisterData = await logic.registerAsync(userToAdd);
     //console.log(token);
     response.status(201).json(successfullRegisterData);
@@ -29,7 +29,7 @@ router.post('/login', async (request, response, next) => {
   try {
     let successfullLoginData = await logic.loginAsync(user);
     //console.log(token);
-    response.status(200).json(successfullLoginData);
+    response.json(successfullLoginData);
   } catch (error) {
     return next(error);
   }
@@ -38,9 +38,8 @@ router.post('/login', async (request, response, next) => {
 //Update password
 router.patch('/:id', isCheckUserData, async (request, response, next) => {
   const newPassword = request.body.newPassword;
-    const userToUpdate = request.body;
+  const userToUpdate = request.body;
   try {
-    
     if (!newPassword) {
       return response.sendStatus(400);
     }
@@ -48,8 +47,7 @@ router.patch('/:id', isCheckUserData, async (request, response, next) => {
     const updatedToken = await logic.updatePasswordAsync(userToUpdate);
     console.log('Password changed successfully');
     response.status(200).json(updatedToken);
-  }
-   catch (error) {
+  } catch (error) {
     return next(error);
   }
 });

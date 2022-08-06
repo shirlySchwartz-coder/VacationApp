@@ -1,27 +1,21 @@
-
 import axios from 'axios';
 import React, { ChangeEvent, useState, useContext } from 'react';
 import { ActionType } from '../../redux/action-type';
 import './AddVacation.css';
-import IVacation from '../../Models/IVacation';
-import { useDispatch } from "react-redux";
 
+import { useDispatch } from 'react-redux';
 
 function AddVacation() {
-  let start = '';
-  let end = '';
-  let today = new Date();
-  console.log(today);
+  
   const [destination, setDestination] = useState('');
   const [price, setPrice] = useState(0);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+   const [startDate, setStartDate] = useState(Date);
+   const [endDate, setEndDate] = useState(Date);
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const dispatch = useDispatch();
 
-
-  // const addVacationValidation = () => {
+  // const validateVacationData = () => {
 
   //   if (!destination || !price || !startDate || !endDate || !description) {
   //     alert('PLEASE FILL ALL THE ABOVE');
@@ -48,48 +42,51 @@ function AddVacation() {
   //   };
   // };
 
-  const validateData = () => {
+  const validateVacationData = () => {
     if (!destination || destination == null || destination.length < 2) {
       console.error('Destination is requiered , and must be longer than 2');
+      alert('Destination is requiered , and must be longer than 2');
     }
     if (!price || price == null || price <= 0) {
       console.error('Price is requiered , and must be bigger than 0');
+      alert('Price is requiered , and must be bigger than 0');
     }
-    if (!startDate || startDate == null || startDate < today) {
-      console.error('Start Date is requiered , and must be longer than 4');
-    }
-    if (!endDate || endDate == null || endDate > today) {
-      console.error(
-        'End Date is requiered , and must be bigger or equel then today'
-      );
-    } else {
-      return false;
-    }
+    // if (!startDate || startDate == null  ) {
+    //   console.error('Start Date is requiered , and must be longer than 4');
+    // }
+    // if (!endDate || endDate == null  ) {
+    //   console.error('End Date is requiered , and must be bigger or equel then today');
+    // }
+    return true;
   };
-  const onSendClicked = () => {
-    const afterValidaion = validateData();
+
+  const onSendClicked = async () => {
+    const afterValidaion = validateVacationData();
     if (!afterValidaion) {
       throw new Error('Some thing not ok with the data;');
-    } else {
+    } 
+    else 
+    {
       const newVacation = {
         destination: destination,
         price: price,
-        startDate: start,
-        endDate: end,
+        startDate: startDate,
+        endDate: endDate,
         imageUrl: imageUrl,
         description: description,
       };
 
       try {
-        axios
-          .post('http://localhost:3001/vacations/', newVacation)
-          .then((response) => {
-            console.log(response);
-            if (response.status === 200) {
-              dispatch({ type: ActionType.AddVacation, payload: newVacation });
-              console.log('User was Add');
-            }
-          });
+        const response = await axios.post(
+          'http://localhost:3001/vacations',
+          newVacation
+        );
+        const serverResponse = response.data;
+
+        console.log(response);
+
+        dispatch({ type: ActionType.AddVacation, payload: newVacation });
+        console.log('Vacation was Add');
       } catch (error) {
         alert(error);
       }
@@ -124,7 +121,6 @@ function AddVacation() {
           placeholder='Price'
           className='Input col-6'
           value={price}
-          defaultValue={null}
           onChange={(e) => setPrice(+e.target.value)}
         />
       </div>
@@ -137,8 +133,8 @@ function AddVacation() {
           name='startDate'
           placeholder='Start Date'
           className='Input col-6'
-          value={start}
-          onChange={(e) => (start = e.target.value)}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
         />
       </div>
       <div className='Input-Container row justify-content-center'>
@@ -150,10 +146,12 @@ function AddVacation() {
           name='endDate'
           placeholder='End Date'
           className='Input col-6'
-          value={end}
-          onChange={(e) => (end = e.target.value)}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
         />
       </div>
+
+      <br />
       <div className='Input-Container row justify-content-center'>
         <label htmlFor='imageUrl' className='Label col-5'>
           Image Url:{' '}

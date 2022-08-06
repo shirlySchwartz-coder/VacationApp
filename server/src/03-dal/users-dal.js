@@ -1,7 +1,7 @@
 const dal = require('../03-dal/dal');
 
 async function isUserNameExist(userName) {
-  let sql = 'SELECT userId as user_id from users where userName as user_name = ?';
+  let sql = 'SELECT user_id as userId from users where user_name = ? as userName';
   let params = [userName];
   let users = await dal.executeWithParams(sql, params);
 
@@ -13,14 +13,14 @@ async function isUserNameExist(userName) {
 
 async function addUser(user) {
   let sql =
-    `insert into users(userName as user_name, password, userType as user_type, firstName as first_name, lastName as last_name) ` +
+    `INSERT into users( user_name, password,  user_type,  first_name,  last_name) ` +
     `values(?, ?, ?, ?, ?)`;
   let params = [
-    user.user_name,
+    user.userName,
     user.password,
-    user.user_type,
-    user.first_name,
-    user.last_name,
+    user.userType,
+    user.firstName,
+    user.lastName,
   ];
   try {
     let newUser = await dal.executeWithParams(sql, params);
@@ -44,9 +44,9 @@ async function changePassword(user) {
     return true;
   }
   async function getUserAsync(credentials) {
-    let sql = `SELECT id, user_type as userType, first_name as firstName, user_name as userName 
+    let sql = `SELECT user_id as UserId, user_type as userType, first_name as firstName, user_name as userName 
       from users where user_name = ? and password = ?`;
-    let params = [credentials.user_name, credentials.password];
+    let params = [credentials.userName, credentials.password];
     let [userData] = await dal.executeWithParams(sql, params);
   
     if (!userData) {

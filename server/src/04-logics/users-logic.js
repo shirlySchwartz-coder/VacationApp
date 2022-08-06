@@ -1,11 +1,11 @@
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const dal = require('../03-dal/dal');
-const ServerError = require('../06-middlewares/07-errors/server-error');
-const ErrorType = require('../06-middlewares/07-errors/error-type');
+//const dal = require('../03-dal/dal');
+const ServerError = require('../06-middlewares/errors/server-error');
+const ErrorType = require('../06-middlewares/errors/error-type');
 
-const jwtHelper = require('../08-helpers/jwt-helpers');
-const { validateUserData } = require('../06-middlewares/valid-data');
+const jwtHelper = require('../services/jwt-helpers');
+const { validateUserData, normalizeOptionalData, encryptPassword } = require('../services/login-services');
 const usersDal = require('../03-dal/users-dal');
 
 async function registerAsync(user) {
@@ -34,21 +34,21 @@ async function registerAsync(user) {
   return token;
 }
 
-function normalizeOptionalData(user) {
-  if (!user.first_name) {
-    user.first_name = '';
-  }
-  if (!user.last_name) {
-    user.last_name = '';
-  }
-}
+// function normalizeOptionalData(user) {
+//   if (!user.first_name) {
+//     user.first_name = '';
+//   }
+//   if (!user.last_name) {
+//     user.last_name = '';
+//   }
+// }
 
-function encryptPassword(password) {
-  const saltRight = 'sdkjfhdskajh';
-  const saltLeft = '--mnlcfs;@!$ ';
-  let passwordWithSalt = saltLeft + password + saltRight;
-  return crypto.createHash('md5').update(passwordWithSalt).digest('hex');
-}
+// function encryptPassword(password) {
+//   const saltRight = 'sdkjfhdskajh';
+//   const saltLeft = '--mnlcfs;@!$ ';
+//   let passwordWithSalt = saltLeft + password + saltRight;
+//   return crypto.createHash('md5').update(passwordWithSalt).digest('hex');
+// }
 
 //Login
 async function loginAsync(credentials) {

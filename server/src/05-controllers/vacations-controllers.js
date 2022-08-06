@@ -50,7 +50,7 @@ router.post('/', async (request, response, next) => {
     if (addedVacation) {
       response.status(201).json(addedVacation);
     }
-    response.status(400);
+    //response.status(400);
   } catch (error) {
     return next(error);
   }

@@ -38,9 +38,9 @@ async function addVacationAsync(vacation) {
   const params = [
     vacation.destination,
     vacation.price,
-    vacation.image,
-    vacation.start,
-    vacation.end,
+    vacation.imageUrl,
+    vacation.startDate,
+    vacation.endDate,
     vacation.description,
   ];
   try {
@@ -48,9 +48,7 @@ async function addVacationAsync(vacation) {
     vacation.vacationId = info.insertId;
     return vacation;
   } catch (error) {
-    throw new ServerError(
-      ErrorType.GENERAL_ERROR,
-      json.stringify(vacation),
+    throw new ServerError(ErrorType.GENERAL_ERROR,json.stringify(vacation),
       error
     );
   }

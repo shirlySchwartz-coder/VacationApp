@@ -1,4 +1,4 @@
-const ServerError = require('./07-errors/server-error');
+const ServerError = require('../06-middlewares/errors/server-error');
 
 function validateUserData(userName, password) {
   if (!userName) {
@@ -25,7 +25,25 @@ function isCheckUserData(request, response, next) {
   next();
 }
 
+function normalizeOptionalData(user) {
+  if (!user.first_name) {
+    user.first_name = '';
+  }
+  if (!user.last_name) {
+    user.last_name = '';
+  }
+}
+
+function encryptPassword(password) {
+  const saltRight = 'sdkjfhdskajh';
+  const saltLeft = '--mnlcfs;@!$ ';
+  let passwordWithSalt = saltLeft + password + saltRight;
+  return crypto.createHash('md5').update(passwordWithSalt).digest('hex');
+}
+
 module.exports = {
   isCheckUserData,
   validateUserData,
+  normalizeOptionalData,
+  encryptPassword
 };
