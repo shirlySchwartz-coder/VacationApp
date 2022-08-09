@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ConnectContext } from '../../services/socket-container';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Register from './Register';
 
 function Login() {
   const [userName, setUserName] = useState('');
@@ -31,12 +32,14 @@ function Login() {
         userName,
         password,
       });
+      ///הוספת הטוקן 
       const serverResponse = response.data;
       let token = 'Bearer ' + serverResponse.token;
       axios.defaults.headers.common['Authorization'] = token;
       localStorage.setItem('token', token);
-
+console.log(token)
       connect(token);
+      alert(`Hello ${serverResponse.userName} you are loged in`)
       navigate('/');
     } catch (error: any) {
       alert(error.message);
@@ -46,7 +49,7 @@ function Login() {
   return (
     <div className='Login'>
       <div className='Login-content'>
-        <h4>Login</h4>
+       
         <div className='Input-Container'>
           <label htmlFor='username' className='Label'>
             User Name:{' '}
@@ -73,7 +76,8 @@ function Login() {
           className='Login-Btn'
           onClick={onLoginClicked}
         />
-        <div>Don't have an account? </div>
+       
+        
       </div>
     </div>
   );

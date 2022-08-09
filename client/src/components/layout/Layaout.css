@@ -1,17 +1,18 @@
 .Layout {
   text-align: center;
-  background-color: rgb(207, 204, 230);
+  background-color: rgb(240, 246, 246);
+ 
 }
 .Header {
   text-align: center;
   background-color: rgb(21, 0, 255);
 }
 
-.Menu {
+/* .Menu {
   text-align: center;
   background-color: aqua;
   padding: 25px;
-}
+} */
 .Main {
   height: 75%;
   width: 100%;
@@ -26,3 +27,16 @@
   text-align: center;
   background-color: #6276e5;
 }
+.menu-bar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  margin-top: 15px;
+ 
+}
+/* .menu-item{
+  line-height: 1.5;
+  display: inline-block;
+  vertical-align: middle;
+} */

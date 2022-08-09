@@ -1,4 +1,15 @@
+
+body {
+  margin: 0;
+  padding: 0;
+
+}
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
 }
 

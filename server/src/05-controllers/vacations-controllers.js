@@ -68,4 +68,33 @@ router.delete('/:vactionId', async (request, response, next) => {
   }
 });
 
+//http://localhost:3001/vacation/follow/:id
+router.post('/follow/:vactionId', async (request, response, next) => {
+  const id = request.body;
+
+  try {
+    const addedToFollowed = await logic.addVacationToFollow(id);
+    console.log(addedToFollowed);
+    if (addedToFollowed) {
+      response.status(201).json(addedToFollowed);
+    }
+    //response.status(400);
+  } catch (error) {
+    return next(error);
+  }
+})
+
+router.post('/:id/:vacation', async (req, res) => {
+  console.log("in post");
+  const userId = req.params.id;
+  const favorite = req.params.vacation;
+  console.log(userId, favorite);
+  try{
+      const result = await favoritesDal.addToFavorites(userId, favorite);
+      socket.emitGetAllFavorites();
+      res.status(200).send(result);
+  }catch{
+      res.status(500).send('Error');
+  }
+})
 module.exports = router;

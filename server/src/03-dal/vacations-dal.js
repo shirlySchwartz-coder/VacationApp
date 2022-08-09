@@ -3,7 +3,7 @@ const dal = require('../03-dal/dal');
 
 async function getVacationsByPage(pageNumber, amountOfItemsPerPage) {
   let sql = `SELECT 
-    vacation_id as vacationId, destination, price, amount_of_followers as AmountOfFolowers,
+    vacation_id as vacationId, destination, price, amount_of_followers as amountOfFollowers,
     image_url as imageUrl, start_date as startDate, end_date as endDate, description 
    FROM vacations_db.vacations order by vacation_id LIMIT ? OFFSET ?`;
 
@@ -21,7 +21,7 @@ async function getVacationsByPage(pageNumber, amountOfItemsPerPage) {
 async function getOneVacationAsync(id) {
   let params = id;
   const sql = `SELECT 
-   vacation_id as vacationId, destination, price, amount_of_followers as AmountOfFolowers,image_url as imageUrl, start_date as startDate, end_date as endDate, description FFROM vacations where vacation_id = ?`;
+   vacation_id as vacationId, destination, price, amount_of_followers as amountOfFolowers,image_url as imageUrl, start_date as startDate, end_date as endDate, description FFROM vacations where vacation_id = ?`;
   try {
     const vacation = await dal.executeWithParams(sql, params);
     return vacation;
@@ -48,7 +48,9 @@ async function addVacationAsync(vacation) {
     vacation.vacationId = info.insertId;
     return vacation;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR,json.stringify(vacation),
+    throw new ServerError(
+      ErrorType.GENERAL_ERROR,
+      json.stringify(vacation),
       error
     );
   }
@@ -67,10 +69,24 @@ async function deleteVacationAsync(id) {
     );
   }
 }
+async function addVacationToFollow(id) {
+  const params = [id];
+  const sql = `DELETE FROM vacations WHERE vacation_id = ?`;
+  try {
+    await dal.executeWithParams(sql, params);
+  } catch (error) {
+    throw new ServerError(
+      ErrorType.VACATION_DONT_EXIST,
+      JSON.stringify(),
+      error
+    );
+  }
+}
 module.exports = {
   getVacationsByPage,
   addVacationAsync,
   deleteVacationAsync,
   getVacationsByPage,
   getOneVacationAsync,
+  addVacationToFollow,
 };

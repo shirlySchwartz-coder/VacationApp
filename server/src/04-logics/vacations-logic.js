@@ -26,9 +26,15 @@ async function deleteVacationAsync(id) {
   //pushLogic.broadcast("delete-vacation", {id});
 }
 
+//addVacationToFollow
+async function addVacationToFollow(id) {
+  let vacation = await vacationsDal.addVacationToFollow(id);
+  return vacation;
+}
 module.exports = {
   getOneVacationAsync,
   addVacationAsync,
   deleteVacationAsync,
   getVacationsByPage,
+  addVacationToFollow
 };

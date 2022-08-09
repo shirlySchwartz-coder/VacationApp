@@ -6,7 +6,7 @@ import Header from './Header';
 import './Layaout.css';
 import Login from '../accounts/Login';
 import Register from '../accounts/Register';
-import Modal from './ModalForm';
+import Modal from '../accounts/ModalForm';
 import About from '../pages/About';
 import VacationsPages from '../Vacations/VacationsPages';
 //import VacationsList from '../Vacations/VacationsList';

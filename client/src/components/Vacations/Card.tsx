@@ -15,7 +15,13 @@ function Card(props: IVacationCard) {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [img, setImg] = useState('');
+  const [isFollowed, setIsFollowed] = useState(false);
+  let isOpenFullCard = false;
+  let isUsercustomer = true;
 
+  let amountOfFollowersImg =
+    'https://img.icons8.com/external-wanicon-flat-wanicon/2x/external-followers-influencer-marketing-wanicon-flat-wanicon.png';
+  let addToFolloweImg = '../../images/follow.png';
 
   // const [destination, setDestination] = useState('');
   // const [price, setPrice] = useState(0);
@@ -41,11 +47,24 @@ function Card(props: IVacationCard) {
 
   useEffect(() => {
     return () => {
-       setStart(intialDate(vacation.startDate));
-       setEnd(intialDate(vacation.endDate));
-       setImg(defaultPicture());
+      setStart(intialDate(vacation.startDate));
+      setEnd(intialDate(vacation.endDate));
+      setImg(defaultPicture());
     };
   }, []);
+
+  const followStatus = async (vacation: IVacation) => {
+    //let curentStatus = server.status;
+    try {
+      const response = await axios.post('http://localhost:3001/vacation/follow/:id', {
+        vacation,
+      });
+      console.log(response);
+      //dispatch({type : ActionType.ChangeStatus, payload: vacation});
+    } catch (e) {
+      console.log('change status function -Failed to retrive servers');
+    }
+  };
 
   return (
     <div className='col'>
@@ -56,26 +75,45 @@ function Card(props: IVacationCard) {
             <label className='card-title col-5'>Destination: </label>
             <span className='card-text col-5'>{vacation.destination}</span>
           </div>
-         
+
           <div className='row justify-content-center'>
-            <label className='col-5' >Price: </label>
+            <label className='col-5'>Price: </label>
             <span className='col-5'>{vacation.price}</span>
           </div>
-         
+
           <div className='row justify-content-center'>
-            <label  className='col-5'>Start date: </label>
+            <label className='col-5'>Start date: </label>
             <span className='col-5'>{start}</span>
           </div>
           <div>
-            <label  className='col-5'>End date: </label>
+            <label className='col-5'>End date: </label>
             <span className='col-5'>{end}</span>
           </div>
-         
-          <div className='row justify-content-center'>
-            <label  className='col-5'>Description: </label>
-            <span className=''>{vacation.description}</span>
+          {isOpenFullCard && (
+            <div className='row justify-content-center'>
+              <label className='col-5'>Description: </label>
+              <span className=''>{vacation.description}</span>
+            </div>
+          )}
+          <div className='row'>
+            {isUsercustomer && (
+              <div className='social'>
+                <p>
+                  Followers:{''} {vacation.amountOfFollowers}
+                </p>{' '}
+                <label className='switch'>
+                  <input
+                    type='checkbox'
+                    id='togBtn'
+                    defaultChecked={false}
+                    onClick={() => followStatus(vacation)}
+                  />
+                  <div className='slider round'></div>
+                </label>
+                
+              </div>
+            )}
           </div>
-         
         </div>
       </div>
     </div>

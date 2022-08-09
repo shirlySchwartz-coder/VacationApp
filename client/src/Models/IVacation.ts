@@ -5,6 +5,7 @@ export default interface IVacation{
     startDate: Date;
     endDate: Date;
     imageUrl: string;
-    AmountOfFolowers: number;
+    amountOfFollowers: number;
     description:string;
 }
+

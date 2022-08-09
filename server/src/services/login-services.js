@@ -1,15 +1,18 @@
 const ServerError = require('../06-middlewares/errors/server-error');
+const jwt = require('jsonwebtoken');
+const crypto = require("crypto");
 
-function validateUserData(userName, password) {
-  if (!userName) {
+function validateUserData(data) {
+  if (!data.userName) {
     throw new ServerError(ErrorType.USER_NAME_IS_MISSING);
   }
-  if (!password) {
+  if (!data.password) {
     throw new ServerError(ErrorType.PASSWORD_IS_MISSING);
   }
-  if (password.length < 5) {
+  if (data.password.length < 5) {
     throw new ServerError(ErrorType.PASSWORD_TO_SHORT);
   }
+  
 }
 
 function isCheckUserData(request, response, next) {
@@ -17,7 +20,7 @@ function isCheckUserData(request, response, next) {
   if (!request.body.fullToken) throw new ServerError(JSON.stringify('Login first'));
   if (!request.body.fullToken.token) throw new ServerError(JSON.stringify('No Valid Token'));
   if (!request.body.fullToken.userId) throw new ServerError(JSON.stringify('Not Valid Id'));
-  const errors = validateUserData(request.body.fullToken.userName,request.body.password);
+  const errors = validateUserData(request.body.fullToken.userName, request.body.password);
   if (errors) {
      throw new ServerError(JSON.stringify('Some thing is missing'));
      return;

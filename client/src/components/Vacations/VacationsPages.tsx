@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react';
-import Card from '../layout/Card';
+import Card from './Card';
 import { useDispatch, useSelector } from 'react-redux';
 import IVacation from '../../Models/IVacation';
 import { ActionType } from '../../redux/action-type';
@@ -57,15 +57,21 @@ function VacationsPages() {
   return (
     <div className='vacations'>
       <div className='bd-example container'>
-        <div className='row row-cols-1 row-cols-md-3 g-4'>
-          <div className='col'>{isUserAdmin && <AddVacation />}</div>
+        {/* <div className='row row-cols-1 row-cols-md-3 row-col-sd-2 g-4'> */}
+        <div className='row row-cols-2 row-cols-lg-3 g-2 g-lg-3'>
+          {isUserAdmin && (
+            <div className='col'>
+              {' '}
+              <AddVacation />
+            </div>
+          )}
 
           {vacations.map((vacation) => (
             <Card vacation={vacation} key={vacation.vacationId} />
           ))}
         </div>
         <div className='row'>
-          <div className='col-3'>
+          <div className='col-sm-6'>
             <input
               type='button'
               disabled={pageNumber == 1}

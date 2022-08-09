@@ -2,15 +2,16 @@ import axios from 'axios';
 import React, { ChangeEvent, useState, useContext } from 'react';
 import IUser from '../../Models/IUser';
 import { ActionType } from '../../redux/action-type';
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
+  let navigate = useNavigate();
   let [firstname, setFirstName] = useState('');
   let [lastname, setLastName] = useState('');
   let [username, setUserName] = useState('');
   let [password, setPassword] = useState('');
   const dispatch = useDispatch();
-
 
   const OnInputChanged = (event: ChangeEvent<HTMLInputElement>) => {
     let tempInfo = event.target.value;
@@ -41,6 +42,7 @@ function Register() {
     }
     if (!password || password == null || password.length < 4) {
       console.error('password is requiered , and must be longer than 4');
+      return true
     } else {
       return false;
     }
@@ -62,9 +64,10 @@ function Register() {
       try {
         axios.post('http://localhost:3001/users/', user).then((response) => {
           console.log(response);
-          if (response.status === 200) {
-            dispatch({type:ActionType.AddNewUser, payload: user})
+          if (response.status === 201) {
+            dispatch({ type: ActionType.AddNewUser, payload: user });
             console.log('User was Add');
+            navigate('/login')
           }
         });
       } catch (error) {
@@ -76,9 +79,6 @@ function Register() {
   return (
     <div className='Register'>
       <div className='Register-Form'>
-        <div className='Titel'>
-          <h4>Register</h4>
-        </div>
         <div className='Input-Container'>
           <label htmlFor='firstname' className='Label'>
             First Name:{' '}
@@ -138,14 +138,10 @@ function Register() {
         onClick={onRegisterClicked}
         value='Send'
       />
-      <br />
-      <div>
-        Already have an account?{' '}
-        <br />
-      </div>
+
+      
     </div>
   );
 }
 export default Register;
-
 

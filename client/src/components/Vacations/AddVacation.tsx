@@ -6,11 +6,10 @@ import './AddVacation.css';
 import { useDispatch } from 'react-redux';
 
 function AddVacation() {
-  
   const [destination, setDestination] = useState('');
   const [price, setPrice] = useState(0);
-   const [startDate, setStartDate] = useState(Date);
-   const [endDate, setEndDate] = useState(Date);
+  const [startDate, setStartDate] = useState(Date);
+  const [endDate, setEndDate] = useState(Date);
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const dispatch = useDispatch();
@@ -64,9 +63,7 @@ function AddVacation() {
     const afterValidaion = validateVacationData();
     if (!afterValidaion) {
       throw new Error('Some thing not ok with the data;');
-    } 
-    else 
-    {
+    } else {
       const newVacation = {
         destination: destination,
         price: price,
@@ -98,7 +95,7 @@ function AddVacation() {
       <div className='Titel'>
         <h4>Add Vacation</h4>
       </div>
-      <div className='Input-Container row justify-content-center'>
+      <div className='card-card-Input-Container row justify-content-center'>
         <label htmlFor='destination' className='Label col-5'>
           Destination:{' '}
         </label>
@@ -111,7 +108,7 @@ function AddVacation() {
           onChange={(e) => setDestination(e.target.value)}
         />
       </div>
-      <div className='Input-Container row justify-content-center'>
+      <div className='card-Input-Container row justify-content-center'>
         <label htmlFor='price' className='Label col-5'>
           Price:{' '}
         </label>
@@ -124,7 +121,7 @@ function AddVacation() {
           onChange={(e) => setPrice(+e.target.value)}
         />
       </div>
-      <div className='Input-Container row justify-content-center'>
+      <div className='card-Input-Container row justify-content-center'>
         <label htmlFor='startDate' className='Label col-5'>
           Start Date:{' '}
         </label>
@@ -137,7 +134,7 @@ function AddVacation() {
           onChange={(e) => setStartDate(e.target.value)}
         />
       </div>
-      <div className='Input-Container row justify-content-center'>
+      <div className='card-Input-Container row justify-content-center'>
         <label htmlFor='endDate' className='Label col-5'>
           End Date:{' '}
         </label>
@@ -151,8 +148,7 @@ function AddVacation() {
         />
       </div>
 
-      <br />
-      <div className='Input-Container row justify-content-center'>
+      <div className='card-Input-Container row justify-content-center'>
         <label htmlFor='imageUrl' className='Label col-5'>
           Image Url:{' '}
         </label>
@@ -164,7 +160,7 @@ function AddVacation() {
           onChange={(e) => setImageUrl(e.target.value)}
         />
       </div>
-      <div className='Input-Container row justify-content-center'>
+      <div className='card-Input-Container row justify-content-center'>
         <label htmlFor='description' className='Label col-5'>
           Description:{' '}
         </label>
@@ -176,7 +172,7 @@ function AddVacation() {
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
-      <br />
+
       <div className='Send-Button'>
         <input
           type='button'

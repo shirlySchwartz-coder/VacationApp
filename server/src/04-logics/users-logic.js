@@ -9,12 +9,15 @@ const { validateUserData, normalizeOptionalData, encryptPassword } = require('..
 const usersDal = require('../03-dal/users-dal');
 
 async function registerAsync(user) {
-  // Validation:
-  const errors = validateUserData(user);
-  if (errors) throw new ServerError(ErrorType.GENERAL_ERROR, errors);
+  // // Validation:
+  // const errors = validateUserData(user);
+  // if (errors) throw new ServerError(ErrorType.GENERAL_ERROR, errors);
+
+   validateUserData(user);
+  
 
   //If user exist
-  if (await usersDal.isUserNameExist(user.user_name)) {
+  if (await usersDal.isUserNameExist(user.userName)) {
     throw new ServerError(ErrorType.USER_NAME_ALREADY_EXIST);
   }
 
@@ -27,28 +30,13 @@ async function registerAsync(user) {
   // Save Data:
   await usersDal.addUser(user);
 
-  // Create JWT Token:
-  const token = jwtHelper.getNewToken(user);
+  // // Create JWT Token:
+  // const token = jwtHelper.getNewToken(user);
 
-  // Return the Token:
-  return token;
+  // // Return the Token:
+  // return token;
 }
 
-// function normalizeOptionalData(user) {
-//   if (!user.first_name) {
-//     user.first_name = '';
-//   }
-//   if (!user.last_name) {
-//     user.last_name = '';
-//   }
-// }
-
-// function encryptPassword(password) {
-//   const saltRight = 'sdkjfhdskajh';
-//   const saltLeft = '--mnlcfs;@!$ ';
-//   let passwordWithSalt = saltLeft + password + saltRight;
-//   return crypto.createHash('md5').update(passwordWithSalt).digest('hex');
-// }
 
 //Login
 async function loginAsync(credentials) {
@@ -60,15 +48,16 @@ async function loginAsync(credentials) {
   const userData = await usersDal.getUserAsync(credentials);
 
   if (!userData) throw new ServerError(ErrorType.WRONG_USER_NAME_OR_PASSWORD);
+  
 
   // Create JWT Token:
-  const token = jwtHelper.getNewToken(userData);
+  const fullToken = jwtHelper.getNewToken(userData);
   let now = new Date();
   let tokenStart = now.toUTCString();
   console.log(`${tokenStart} )----- User ${userData.userName} got Token`);
 
   // Return Token:
-  return token;
+  return fullToken;
 }
 
 ///Update Functions

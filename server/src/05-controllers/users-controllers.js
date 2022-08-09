@@ -14,9 +14,11 @@ router.post('/', async (request, response, next) => {
   
   userToAdd.user_type = Role.User;
   try {
-    let successfullRegisterData = await logic.registerAsync(userToAdd);
+    //let successfullRegisterData = await logic.registerAsync(userToAdd);
     //console.log(token);
-    response.status(201).json(successfullRegisterData);
+    //response.status(201).json(successfullRegisterData);
+     await logic.registerAsync(userToAdd);
+    response.status(201).json();
   } catch (error) {
     return next(error);
   }
